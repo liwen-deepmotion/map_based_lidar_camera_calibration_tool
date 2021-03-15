@@ -13,11 +13,26 @@ The important features of the calibration tool:
 
 ## Setup 
 
-TODO
+To run the current version of software, you could  
+1. Clone the repository to your workspace  
+2. Install the dependencies  
+    * System dependencies  
+        - Qt5 
+        - OpenCV > 3.4.0 
+    * Python dependencies
+        ```bash
+        $ pip3 install numpy opencv-python PyQt5 pyquaternion
+        ```
 
 ## Usage
 
-TODO
+You could start current version of software by
+```bash
+cd ./calibration_tool
+python3 main.py \
+    --keyframes_dir ../test_data/sequence/keyframes \
+    --vector_map_file_path ../test_data/sequence/map/map.json
+```
 
 ## Contributing
 
