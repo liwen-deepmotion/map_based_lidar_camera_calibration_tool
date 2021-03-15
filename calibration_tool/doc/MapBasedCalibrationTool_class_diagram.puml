@@ -1,0 +1,96 @@
+@startuml
+
+class MapBasedCalibrator
+
+class BaseObserver
+MapBasedCalibrator -right-> BaseObserver
+
+package widget {
+    MapBasedCalibrator -up-> MainCanvasWidget
+    MapBasedCalibrator -up-> SidebarWidget
+}
+
+package transform {
+Transform <|-- CameraToWorldTransform
+Transform <|-- LidarToCameraTransform
+}
+
+package layer {
+    BaseObserver <|-- LayerManager
+    LayerManager o-left-> BaseLayer
+    LayerManager -down-> HdMapAdapter
+    MapBasedCalibrator -down-> BaseLayer
+    BaseLayer <|-down- VectorMapLayer
+    BaseLayer <|-left- CorrespondenceLayer
+    class TrajectoryLayer {
+    + load_from_lidar_trajectory()
+    + load_from_camera_trajectory()
+    }
+    BaseLayer <|-down- TrajectoryLayer
+    TrajectoryLayer --> LidarToCameraTransform
+}
+
+package trajectory {
+    TrajectoryLayer --> CameraConfig
+    Trajectory <|-- CameraTrajectory
+    Trajectory <|-- LidarTrajectory
+    Trajectory o--> TrajectoryNode
+    TrajectoryLayer --> Trajectory
+    TrajectoryNode --> TrajectoryNode
+    TrajectoryNode --> CameraToWorldTransform
+}
+
+package vector {
+    VectorMapLayer o--> Vector
+    Vector <|-- Point3D
+    Vector <|-- Polyline3D
+    Vector <|-- Polygon3D
+}
+
+package shape {
+    Shape <|-up- Point2D
+    Shape <|-up- Polyline2D
+    Shape <|-up- Polygon2D
+}
+
+package correspondence {
+    CorrespondenceLayer o--> Correspondence
+    Correspondence <|-left- PointCorrespondence
+    Correspondence <|-left- LineCorrespondence
+    Correspondence -down-> Vector
+    Correspondence -up-> Shape
+    CorrespondenceLayer --> LidarToCameraTransform
+}
+
+package observer.worker {
+    BaseObserver <|-- ShapeAdder
+    BaseObserver <|-- CorrespondenceAdder
+    BaseObserver <|-- CorrespondenceRemover
+    class CalibrationOptimizer {
+    - execute_optimization()
+    }
+    BaseObserver <|-- CalibrationOptimizer
+    class VectorMapReprojector {
+    - on_vector_map_loaded()
+    - on_image_changed()
+    - on_optimization_executed()
+    - reproject_vector_map()
+    }
+    BaseObserver <|-- VectorMapReprojector
+    class TrajectoryNavigator {
+    - current_node_idx
+    - goto_next_node()
+    + current_node()
+    }
+    VectorMapReprojector  ..> TrajectoryNavigator
+    BaseObserver <|-- TrajectoryNavigator
+}
+
+package observer.core {
+    BaseObserver <|-up- CorrespondenceSelector
+    BaseObserver <|-up- ClosestVertexSelector
+    BaseObserver <|-up- MouseObserver
+    BaseObserver <|-up- KeyboardObserver
+}
+
+@enduml

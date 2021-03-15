@@ -1,0 +1,20 @@
+<RCC>
+  <qresource>
+    <file>icons/images.png</file>
+    <file>icons/lidar.png</file>
+    <file>icons/vector_map.png</file>
+    <file>icons/correspondence.png</file>
+    <file>icons/clear.png</file>
+    <file>icons/execute.png</file>
+    <file>icons/branch_open.png</file>
+    <file>icons/branch_closed.png</file>
+    <file>icons/checkbox_unchecked.png</file>
+    <file>icons/checkbox_checked.png</file>
+    <file>icons/button_checked.png</file>
+    <file>icons/arrow_up.png</file>
+    <file>icons/arrow_drop_down.png</file>
+    <file>icons/arrow_down.png</file>
+    <file>icons/arrow_left.png</file>
+    <file>icons/arrow_right.png</file>
+  </qresource>
+</RCC>
