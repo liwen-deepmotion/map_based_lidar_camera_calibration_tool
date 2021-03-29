@@ -89,15 +89,6 @@ class CalibrationOptimizer(BaseObserver):
         prepare_success = self._prepare_optimization()
         if not prepare_success:
             return
-        # self._execute(self._exe_str)
-        # self._load_optimized_calibration()
-        # if not self._is_optimized:
-        #     success = self.toggle_optimization_result()
-        #     if success:
-        #         self.editor.side_bar_widget \
-        #             .toggle_optimization_checkbox.setChecked(True)
-        #         self.invoke_event(CustomEvent.CalibrationOptimizedEvent)
-        #         self._is_optimization_executed = True
         if not prepare_success:
             return
         else:
@@ -192,8 +183,6 @@ class CalibrationOptimizer(BaseObserver):
                     .dot(T_transform))
         self._is_optimized = not self._is_optimized
         self._show_optimization_state_text()
-        # trajectory_layer.set_base_lidar_to_camera_transform(
-        #     T_lidar_to_cam_optimzed)
         return True
 
     def _load_optimized_transform(self, file_path: str) -> np.ndarray(shape=(4,4)):
@@ -205,17 +194,7 @@ class CalibrationOptimizer(BaseObserver):
     def _execute(self, exe_str: str):
         proc = subprocess.Popen(exe_str, shell=True, stdout=subprocess.PIPE)
         proc.wait()
-        # Note: Except for debugging, avoid to print outputs, as it is
-        # time-costing.
         
-        # print('-------------------')
-        # output_string = str(proc.stdout.read())
-        # strings = output_string.split('\\n')
-        #
-        # for idx, string in enumerate(strings):
-        #     print(string)
-        # print('-------------------')
-
     def _show_optimization_state_text(self):
         self.renderer.remove_actor(self._text_actor)
         self._text_actor.geometry().set_qt_geometry(
