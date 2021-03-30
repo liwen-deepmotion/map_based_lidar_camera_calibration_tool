@@ -40,8 +40,6 @@ class CalibrationOptimizer(BaseObserver):
         super().__init__(editor)
 
         self.QT_SIGNAL_CALLBACK_TUPLES = [
-            # (self.editor.actionOptimizeCalibration.triggered,
-            #  self.optimize_calibration),
             (self.editor.side_bar_widget.execute_optimize_btn.clicked,
              self.start_optimization),
             (self.editor.side_bar_widget.toggle_optimization_checkbox.clicked,
@@ -141,8 +139,6 @@ class CalibrationOptimizer(BaseObserver):
             exe_path,
             '--seq_dir ' + sequence_dir,
             '--correspondence_json_path ' + correspondence_layer.file_path,
-            '--use_reprojection_error',
-            '--hd_map_path ' + './',
         ]
         exe_str = ''
         for sub_str in exe_command:

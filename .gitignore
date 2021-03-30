@@ -20,3 +20,6 @@ venv.bak/
 
 *.pyc
 *.swp
+
+# C++ build files
+calibration_tool/external/calibrate_lidar_camera_source/*build*/
