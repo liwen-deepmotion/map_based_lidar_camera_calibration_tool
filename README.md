@@ -13,7 +13,7 @@ The important features of the calibration tool:
 
 ## Setup 
 
-To run the current version of software, you could  
+To run the software, you could  
 1. Clone the repository to your workspace  
 2. Install the dependencies  
     * System dependencies  
@@ -23,10 +23,26 @@ To run the current version of software, you could
         ```bash
         $ pip3 install numpy opencv-python PyQt5 pyquaternion
         ```
+    * C++ Optimizer dependencies 
+        - Eigen3
+        - Ceres
+        - Boost
+        - jsoncpp
+        - gflags
+        - glog
+3. Compile the C++ Optimizer
+    ```bash
+    cd ./calibration_tool/external/calibrate_lidar_camera_source/
+    mkdir build
+    cd build
+    cmake ..
+    make
+    cp calibrate_lidar_camera ../../
+    ```
 
 ## Usage
 
-You could start current version of software by
+You could start the software by
 ```bash
 cd ./calibration_tool
 python3 main.py \
