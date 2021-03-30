@@ -125,6 +125,10 @@ class CalibrationOptimizer(BaseObserver):
         print(exe_path)
 
         correspondence_layer = self.editor.layer_manager.correspondence_layer()
+        if len(correspondence_layer.correspondences()) == 0:
+            print('Optimization terminated, no correspondence found in '
+                  'the scene.')
+            return False
         if correspondence_layer.file_path == '':
             self.editor.layer_manager.on_save_correspondences()
         else:
@@ -140,6 +144,7 @@ class CalibrationOptimizer(BaseObserver):
             '--seq_dir ' + sequence_dir,
             '--correspondence_json_path ' + correspondence_layer.file_path,
         ]
+        print(exe_command)
         exe_str = ''
         for sub_str in exe_command:
             exe_str += ' ' + sub_str
