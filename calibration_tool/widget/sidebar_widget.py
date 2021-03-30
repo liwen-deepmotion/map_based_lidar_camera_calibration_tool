@@ -62,11 +62,11 @@ class SideBarWidget(QWidget, Ui_Sidebar):
         # self.add_correspondence_btn.setIconSize(QSize(70, 70))
         self.add_correspondence_btn.setSizePolicy(
             QSizePolicy.Minimum, QSizePolicy.Minimum)
-        self.clear_correspondences_btn.setText("Clear correspondences")
-        # self.clear_correspondences_btn.setText("")
-        # self.clear_correspondences_btn.setIcon(QIcon(":/icons/clear.png"))
-        # self.clear_correspondences_btn.setIconSize(QSize(70, 70))
-        self.clear_correspondences_btn.setSizePolicy(
+        self.clear_correspondence_btn.setText("Clear correspondence")
+        # self.clear_correspondence_btn.setText("")
+        # self.clear_correspondence_btn.setIcon(QIcon(":/icons/clear.png"))
+        # self.clear_correspondence_btn.setIconSize(QSize(70, 70))
+        self.clear_correspondence_btn.setSizePolicy(
             QSizePolicy.Minimum, QSizePolicy.Minimum)
 
         self.toggle_optimization_checkbox.setText("")
@@ -82,7 +82,7 @@ class SideBarWidget(QWidget, Ui_Sidebar):
             self.load_lidar_trajectory,
             self.load_vector_map,
             self.add_correspondence_btn,
-            self.clear_correspondences_btn,
+            self.clear_correspondence_btn,
             self.prev_image_btn,
             self.next_image_btn,
             self.execute_optimize_btn]:
