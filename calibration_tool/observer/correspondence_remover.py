@@ -8,7 +8,7 @@ class CorrespondenceRemover(BaseObserver):
         super().__init__(editor)
 
         self.QT_SIGNAL_CALLBACK_TUPLES = [
-            (self.editor.side_bar_widget.clear_correspondences_btn.clicked,
+            (self.editor.side_bar_widget.clear_correspondence_btn.clicked,
              self.clear_last_correspondence)
         ]
 

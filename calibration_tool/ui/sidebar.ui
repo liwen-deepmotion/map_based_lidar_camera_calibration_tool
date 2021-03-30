@@ -243,9 +243,9 @@
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QToolButton" name="clear_correspondences_btn">
+                 <widget class="QToolButton" name="clear_correspondence_btn">
                   <property name="text">
-                   <string>Clear correspondences</string>
+                   <string>Clear correspondence</string>
                   </property>
                  </widget>
                 </item>
