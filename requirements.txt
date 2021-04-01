@@ -1,0 +1,4 @@
+cvxpy==1.1.11
+numpy==1.19.5
+PyQt5==5.12.2
+pyquaternion==0.9.9

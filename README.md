@@ -20,8 +20,9 @@ To run the software, you could
         - Qt5 
         - OpenCV > 3.4.0 
     * Python dependencies
+        - Python >= 3.6
         ```bash
-        $ pip3 install numpy opencv-python PyQt5 pyquaternion
+        $ pip3 install -r requirements.txt 
         ```
     * C++ Optimizer dependencies 
         - Eigen3
