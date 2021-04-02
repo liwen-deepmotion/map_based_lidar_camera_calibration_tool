@@ -1,7 +1,5 @@
 # Map-based Lidar-camera Calibration Tool
 
-**Note: The whole project will be uploaded progressively, as some details in the project need to be improved and finalized.**
-
 The software is an HD vector map based LiDAR-camera calibration tool, which could be used to calibrate non-overlapping LiDAR-camera pairs with little manually labeled correspondences, and inspect the quality of calibration results.   
 
 ![software](screenshots/software.png)  
