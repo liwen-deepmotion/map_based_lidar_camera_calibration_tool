@@ -77,6 +77,14 @@ class SideBarWidget(QWidget, Ui_Sidebar):
         self.execute_optimize_btn.setSizePolicy(
             QSizePolicy.Expanding, QSizePolicy.Minimum)
 
+        self.show_data_selections_checkbox.setText("")
+        self.optimize_data_selection_btn.setText("Optimize data selection")
+        # self.optimize_data_selection_btn.setText("")
+        # self.optimize_data_selection_btn.setIcon(QIcon(":/icons/execute.png"))
+        # self.optimize_data_selection_btn.setIconSize(QSize(70, 70))
+        self.optimize_data_selection_btn.setSizePolicy(
+            QSizePolicy.Expanding, QSizePolicy.Minimum)
+
         for button in [
             self.load_images,
             self.load_lidar_trajectory,
@@ -85,7 +93,9 @@ class SideBarWidget(QWidget, Ui_Sidebar):
             self.clear_correspondence_btn,
             self.prev_image_btn,
             self.next_image_btn,
-            self.execute_optimize_btn]:
+            self.execute_optimize_btn,
+            self.optimize_data_selection_btn
+        ]:
             button.setStyleSheet(
                 "QToolButton:hover {"
                 "background-color: rgba(54, 191, 153, 55);"

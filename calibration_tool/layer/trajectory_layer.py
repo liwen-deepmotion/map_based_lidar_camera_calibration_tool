@@ -75,6 +75,15 @@ class TrajectoryLayer(BaseLayer):
         return self
 
     def load(self):
+        # FIXME: Load sensor calibrations, make it general later.
+        sensor_calibrations_path = os.path.join(os.path.dirname(
+            self._keyframes_dir), 'sensor_calibrations.json')
+        print(sensor_calibrations_path)
+        self.load_camera_config(sensor_calibrations_path)
+        self.load_base_lidar_to_camera_transform(sensor_calibrations_path)
+        if not os.path.exists(sensor_calibrations_path):
+            return
+
         if self._cam_trajectory_path != '':
             self._load_from_camera_trajectory(self._cam_trajectory_path)
             self.file_path = self._cam_trajectory_path
@@ -83,13 +92,6 @@ class TrajectoryLayer(BaseLayer):
             self.file_path = self._lidar_trajectory_path
         else:
             return
-
-        # FIXME: Load sensor calibrations, make it general later.
-        sensor_calibrations_path = os.path.join(os.path.dirname(
-            self._keyframes_dir), 'sensor_calibrations.json')
-        print(sensor_calibrations_path)
-        self.load_camera_config(sensor_calibrations_path)
-        self.load_base_lidar_to_camera_transform(sensor_calibrations_path)
 
     def load_camera_config(self, camera_config_path: str):
         self._camera_config.from_json_file(camera_config_path)
@@ -132,6 +134,7 @@ class TrajectoryLayer(BaseLayer):
         self._trajectory_nodes = trajectory.trajectory_nodes()
         for trajectory_node in self._trajectory_nodes:
             trajectory_node.set_image_dir(self._keyframes_dir)
+            trajectory_node.set_camera_config(self._camera_config)
 
     def _load_from_lidar_trajectory(self, lidar_trajectory_path: str):
         pass

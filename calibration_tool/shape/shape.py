@@ -54,3 +54,14 @@ class Shape(object):
 
     def tail_vertex(self) -> np.ndarray(shape=(2,)):
         return self._coords[-1, :]
+
+    def length(self) -> float:
+        return np.linalg.norm(self._coords[-1] - self._coords[0])
+
+    def direction(self) -> np.ndarray(shape=(2,)):
+        vec = self.tail_vertex() - self.head_vertex()
+        return vec / np.linalg.norm(vec)
+
+    def normal(self) -> np.ndarray(shape=(2,)):
+        vec = self.direction()
+        return np.array([vec[1], -vec[0]])

@@ -15,7 +15,7 @@ class TrajectoryNavigator(BaseObserver):
     def __init__(self, editor: 'MapBasedCalibrator'):
         super().__init__(editor)
 
-        self._current_trajectory_node_idx = 0
+        self._current_trajectory_node_idx = 20
 
         self._image_actor = ImageActor()
 
@@ -31,6 +31,12 @@ class TrajectoryNavigator(BaseObserver):
             (self.editor.side_bar_widget.next_image_btn.clicked,
              self.goto_next_node),
         ]
+
+    def current_trajectory_node_idx(self) -> int:
+        return self._current_trajectory_node_idx
+
+    def set_current_trajectory_node_idx(self, idx: int):
+        self._current_trajectory_node_idx = idx
 
     def current_trajectory_node(self) -> Union[TrajectoryNode, None]:
         trajectory_nodes = self.editor.layer_manager \

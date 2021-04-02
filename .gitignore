@@ -23,3 +23,6 @@ venv.bak/
 
 # C++ build files
 calibration_tool/external/calibrate_lidar_camera_source/*build*/
+
+# Resource files
+calibration_tool/*.png

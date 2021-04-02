@@ -151,7 +151,7 @@ class VectorReprojector(object):
     def set_extrinsic(self, T_camera_to_world: np.ndarray(shape=(4,4))):
         self._T_world_to_camera = np.linalg.inv(T_camera_to_world)
 
-    def reproject(self, vector: Vector) -> Union[Shape, None]:
+    def reproject(self, vector: Vector, boundary=500, filter=True) -> Union[Shape, None]:
         original_vertices = vector.vertices().copy()
         # Convert to camera coord.
         projected_vertices = \
@@ -159,9 +159,10 @@ class VectorReprojector(object):
             self._T_world_to_camera[:3, 3].T
 
         # Filter backward vertices.
-        forward_mask = projected_vertices[:, 2] > 0.0
-        projected_vertices = projected_vertices[forward_mask]
-        original_vertices = original_vertices[forward_mask]
+        if filter:
+            forward_mask = projected_vertices[:, 2] > 0.0
+            projected_vertices = projected_vertices[forward_mask]
+            original_vertices = original_vertices[forward_mask]
 
         # Project to image coord.
         projected_vertices = projected_vertices.dot(self._K.T)
@@ -169,13 +170,14 @@ class VectorReprojector(object):
             projected_vertices[:, :2] / projected_vertices[:, [2]]
 
         # Clipping.
-        clipping_mask = \
-            (projected_vertices[:, 0] >= -500) & \
-            (projected_vertices[:, 1] >= -500) & \
-            (projected_vertices[:, 0] < self._image_width + 500) & \
-            (projected_vertices[:, 1] < self._image_height + 500)
-        projected_vertices = projected_vertices[clipping_mask]
-        original_vertices = original_vertices[clipping_mask]
+        if filter and boundary > 0:
+            clipping_mask = \
+                (projected_vertices[:, 0] >= -boundary) & \
+                (projected_vertices[:, 1] >= -boundary) & \
+                (projected_vertices[:, 0] < self._image_width + boundary) & \
+                (projected_vertices[:, 1] < self._image_height + boundary)
+            projected_vertices = projected_vertices[clipping_mask]
+            original_vertices = original_vertices[clipping_mask]
 
         if isinstance(vector, (Polyline3D, Polygon3D)) and \
                 len(projected_vertices) < 2:

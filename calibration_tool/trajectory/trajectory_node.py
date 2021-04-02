@@ -8,6 +8,7 @@ from PyQt5.QtCore import QRect
 from PyQt5.QtGui import QImage
 
 from actor.image_actor import ImageActor
+from trajectory.camera_config import CameraConfig
 
 
 class TrajectoryNode(object):
@@ -21,6 +22,8 @@ class TrajectoryNode(object):
         self._timestamp = int()
 
         self._camera_pose = np.zeros((4, 4))
+
+        self._camera_config = CameraConfig()
 
     def set_image_dir(self, image_dir: str):
         self._image_dir = image_dir
@@ -48,3 +51,9 @@ class TrajectoryNode(object):
 
     def set_camera_pose(self, matrix: np.ndarray(shape=(4,4))):
         self._camera_pose = matrix
+
+    def camera_config(self):
+        return self._camera_config
+
+    def set_camera_config(self, camera_config: CameraConfig):
+        self._camera_config = camera_config

@@ -14,6 +14,7 @@ from observer.core.mouse_observer import MouseObserver
 from observer.correspondence_adder import CorrespondenceAdder
 from observer.correspondence_manager import CorrespondenceManager
 from observer.correspondence_remover import CorrespondenceRemover
+from observer.data_selection_optimizer import DataSelectionOptimizer
 from observer.event.event_handler import EventHandler
 from observer.free_shape_adder import FreeShapeAdder
 from observer.layer_manager import LayerManager
@@ -95,6 +96,7 @@ class MapBasedCalibrator(QMainWindow, Ui_MainWindow):
             CorrespondenceManager,
             CorrespondenceRemover,
             CalibrationOptimizer,
+            DataSelectionOptimizer,
         ]:
             observer = observer_class(self)
             observer.connect_myself_to_qt_signals()
