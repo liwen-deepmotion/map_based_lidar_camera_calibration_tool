@@ -22,26 +22,13 @@ class DataSelectionOptimizer(BaseObserver):
 
         self.QT_SIGNAL_CALLBACK_TUPLES = [
             (self.editor.side_bar_widget.optimize_data_selection_btn.clicked,
-             self.temp_loop_data_selection),
+             self.optimize_data_selection),
             (self.editor.side_bar_widget.show_data_selections_checkbox.clicked,
              self.toggle_data_selection_highlights)
         ]
 
         # Record the recommended reprojected vectors and highlight them.
         self.optimal_selections = []  # type: List[Shape]
-
-    def temp_loop_data_selection(self):
-        num_trajectory_nodes = \
-            len(self.editor.layer_manager.trajectory_layer().trajectory_nodes())
-        for idx in range(num_trajectory_nodes):
-            print("\r{}/{} frame data selection".format(
-                idx+1, num_trajectory_nodes), end="")
-            if idx < 96:
-                continue
-            self.editor.trajectory_navigator.set_current_trajectory_node_idx(
-                idx)
-            self.optimize_data_selection()
-        print("\n", end="")
 
     def optimize_data_selection(self):
         camera_pose = \
