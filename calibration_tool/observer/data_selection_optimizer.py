@@ -5,8 +5,10 @@ import cvxpy as cp
 import numpy as np
 import pyquaternion
 # import matplotlib.pyplot as plt
-
+from actor.shape_actor import ShapeActor
+from config.hot_key import KeyCombo, HotKey
 from observer.base_observer import BaseObserver
+from observer.event.events import CustomEvent
 from observer.vector_map_reprojector import VectorReprojector
 from shape.polyline_2d import Polyline2D
 from shape.shape import Shape
@@ -20,15 +22,38 @@ class DataSelectionOptimizer(BaseObserver):
     def __init__(self, editor: 'MapBasedCalibrator'):
         super().__init__(editor)
 
+        self.QT_EVENT_CALLBACK_PRIORITY_TUPLES = [
+            (CustomEvent.KeyComboPressedEvent,
+             self.on_key_press, 0),
+        ]
+
         self.QT_SIGNAL_CALLBACK_TUPLES = [
             (self.editor.side_bar_widget.optimize_data_selection_btn.clicked,
              self.optimize_data_selection),
             (self.editor.side_bar_widget.show_data_selections_checkbox.clicked,
-             self.toggle_data_selection_highlights)
+             self.toggle_data_selection_highlights),
+            (self.editor.side_bar_widget.prev_image_btn.clicked,
+             self.clear_selections),
+            (self.editor.side_bar_widget.next_image_btn.clicked,
+             self.clear_selections),
         ]
 
         # Record the recommended reprojected vectors and highlight them.
         self.optimal_selections = []  # type: List[Shape]
+
+        self._shape_actors = []  # type: List[ShapeActor]
+
+    def on_key_press(self, key_combo: KeyCombo):
+        if key_combo.is_same(HotKey.PREV_FRAME.value):
+            self.clear_selections()
+        elif key_combo.is_same(HotKey.NEXT_FRAME.value):
+            self.clear_selections()
+
+    def clear_selections(self):
+        self._clear_shape_actors()
+        self.optimal_selections = []
+        self.editor.side_bar_widget.show_data_selections_checkbox \
+            .setChecked(False)
 
     def optimize_data_selection(self):
         camera_pose = \
@@ -44,23 +69,27 @@ class DataSelectionOptimizer(BaseObserver):
             vectors, camera_pose)
         print("{} shapes generated".format(len(shapes)))
 
-        # for shape in shapes:
-        #     shape_actor = shape.build_actor()
-        #     shape_actor.property().set_color(255, 255, 0)
-        #     shape_actor.property().set_line_width(5)
-        #     self.renderer.add_actor(shape_actor)
         self.optimal_selections = self._select_correspondences(
             vectors, shapes, camera_pose)
-        # for shape in self.optimal_selections:
-        #     shape_actor = shape.build_actor()
-        #     shape_actor.property().set_color(255, 0, 0)
-        #     shape_actor.property().set_line_width(8)
-        #     self.renderer.add_actor(shape_actor)
-        # self.update()
-        # self.toggle_data_selection_highlights()
+        self.editor.side_bar_widget.show_data_selections_checkbox.setChecked(
+            True)
+        self.toggle_data_selection_highlights()
 
     def toggle_data_selection_highlights(self):
-        pass
+        self._clear_shape_actors()
+        if self.editor.side_bar_widget.show_data_selections_checkbox.isChecked():
+            for shape in self.optimal_selections:
+                shape_actor = shape.build_actor()
+                shape_actor.property().set_color(255, 255, 127)
+                shape_actor.property().set_line_width(15)
+                self.renderer.add_actor(shape_actor)
+                self._shape_actors.append(shape_actor)
+        self.update()
+
+    def _clear_shape_actors(self):
+        for shape_actor in self._shape_actors:
+            self.renderer.remove_actor(shape_actor)
+        self._shape_actors.clear()
 
     def _collect_possible_correspondence_pairs(
             self, vectors: List[Vector], camera_pose: TrajectoryNode) \
